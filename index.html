@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopTrend Giá Tốt - Bắt Đúng Trend, Mua Đúng Giá</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================
+           1. BỘ NHẬN DIỆN THƯƠNG HIỆU & CẤU HÌNH MÀU SẮC (DARK MODE)
+           ========================================================== */
+        :root {
+            --bg-main: #0B0F17;        /* Nền tối chủ đạo */
+            --bg-card: #161F30;        /* Nền thẻ sản phẩm */
+            --bg-card-hover: #1E293B;  /* Nền thẻ khi di chuột */
+            --border-color: #26334D;   /* Viền mỏng phân cách */
+            
+            --text-title: #F8FAFC;     /* Màu chữ tiêu đề */
+            --text-body: #94A3B8;      /* Màu chữ nội dung */
+            --text-muted: #64748B;     /* Màu chữ phụ */
+
+            --accent-green: #10B981;   /* Xanh Neon - Giá tốt / Giá rẻ */
+            --accent-orange: #F97316;  /* Cam Coral - Hot Trend / Điểm nhấn */
+            --accent-blue: #3B82F6;    /* Xanh dương - Nút bấm / Filter */
+
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ==========================================================
+           2. HEADER & BRANDING BAR
+           ========================================================== */
+        header {
+            background-color: rgba(11, 15, 23, 0.9);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo .logo-icon {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-green));
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        .brand-logo h1 {
+            color: var(--text-title);
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-logo span {
+            color: var(--accent-green);
+        }
+
+        .tagline {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ==========================================================
+           3. BANNER HERO & BỘ LỌC NGÀNH HÀNG (FILTERS)
+           ========================================================== */
+        .hero-section {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .hero-title {
+            color: var(--text-title);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero-title span {
+            color: var(--accent-orange);
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-card);
+            color: var(--text-body);
+            border: 1px solid var(--border-color);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background-color: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+
+        /* ==========================================================
+           4. DANH SÁCH SẢN PHẨM (CARD GRID VIEW)
+           ========================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+        }
+
+        /* Nhãn Trend Badge */
+        .trend-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background-color: rgba(249, 115, 22, 0.9);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            z-index: 2;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        .product-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            color: var(--text-title);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .trend-reason {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-orange);
+        }
+
+        /* Bảng so sánh giá tối ưu */
+        .price-box {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .price-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .shop-name {
+            color: var(--text-body);
+            font-weight: 500;
+        }
+
+        .shop-price {
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .shop-price.best-price {
+            color: var(--accent-green);
+            font-size: 0.95rem;
+        }
+
+        /* Nút Mua hàng (CTA) */
+        .btn-cta {
+            margin-top: auto;
+            background: linear-gradient(90deg, #10B981, #059669);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: opacity 0.2s ease;
+            display: block;
+        }
+
+        .btn-cta:hover {
+            opacity: 0.9;
+        }
+
+        /* ==========================================================
+           5. FOOTER
+           ========================================================== */
+        footer {
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: var(--accent-blue);
+        }
+
+        /* Responsive di động */
+        @media (max-width: 600px) {
+            .header-container { flex-direction: column; text-align: center; }
+            .hero-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HEADER & LOGO -->
+    <header>
+        <div class="header-container">
+            <div class="brand-logo">
+                <div class="logo-icon">TT</div>
+                <div>
+                    <h1>TopTrend <span>Giá Tốt</span></h1>
+                </div>
+            </div>
+            <div class="tagline">Bắt Đúng Trend — Mua Đúng Giá</div>
+        </div>
+    </header>
+
+    <!-- 2. HERO & NÚT PHÂN LOẠI -->
+    <section class="hero-section">
+        <h2 class="hero-title">Top Hàng Hot <span>Có Giá Tốt Nhất</span> Hôm Nay</h2>
+        <p>Được lọc & kiểm duyệt giá thực tế từ Shopee, Lazada & TikTok Shop</p>
+        
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="filterCategory('all')">🔥 Tất Cả</button>
+            <button class="tab-btn" onclick="filterCategory('tech')">⚡ Công Nghệ / Decor</button>
+            <button class="tab-btn" onclick="filterCategory('fashion')">👗 Thời Trang</button>
+            <button class="tab-btn" onclick="filterCategory('home')">🏠 Gia Dụng</button>
+        </div>
+    </section>
+
+    <!-- 3. DANH SÁCH SẢN PHẨM -->
+    <main class="container">
+        <div class="product-grid" id="productGrid">
+            <!-- Sản phẩm sẽ được render tự động qua JS bên dưới -->
+        </div>
+    </main>
+
+    <!-- 4. FOOTER -->
+    <footer>
+        <p>© 2026 TopTrend Giá Tốt. Cập nhật mã giảm giá & giá tối ưu hàng ngày.</p>
+        <div class="footer-links">
+            <a href="#">Tham gia Telegram Báo Deal</a>
+            <a href="#">Nhóm Zalo Săn Mã</a>
+        </div>
+    </footer>
+
+    <!-- 5. DỮ LIỆU & XỬ LÝ JAVASCRIPT -->
+    <script>
+        // Dữ liệu mẫu sản phẩm (Bạn có thể thêm/sửa trực tiếp mảng này)
+        const products = [
+            {
+                id: 1,
+                category: 'tech',
+                trendTag: '🔥 TikTok Viral 7 Ngày',
+                title: 'Loa Bluetooth Khuyết Điểm Retro X1',
+                image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&q=80',
+                reason: 'Trend Decor phòng ngủ cực hot trên TikTok Reels tuần này.',
+                prices: [
+                    { shop: 'Shopee Mall', price: '250.000đ', isBest: false },
+                    { shop: 'Lazada Choice', price: '199.000đ', isBest: true }
+                ],
+                affiliateUrl: 'https://shopee.vn' // Dán link Affiliate của bạn vào đây
+            },
+            {
+                id: 2,
+                category: 'home',
+                trendTag: '📈 Top #1 Google Search',
+                title: 'Nồi Chiên Không Dầu Điện Tử 6L',
+                image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=500&q=80',
+                reason: 'Món đồ gia dụng được tìm kiếm nhiều nhất mùa nướng cuối năm.',
+                prices: [
+                    { shop: 'TikTok Shop', price: '890.000đ', isBest: false },
+                    { shop: 'Shopee Official', price: '790.000đ', isBest: true }
+                ],
+                affiliateUrl: 'https://shopee.vn'
+            },
+            {
+                id: 3,
+                category: 'fashion',
+                trendTag: '⭐ KOC Review 4.9*',
+                title: 'Áo Khoác Dù Unisex Phong Cách Hàn Quốc',
+                image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80',
+                reason: 'Đang gâyp bão giới trẻ nhờ phom rộng che khuyết điểm tốt.',
+                prices: [
+                    { shop: 'Shopee Mall', price: '185.000đ', isBest: true },
+                    { shop: 'Lazada', price: '210.000đ', isBest: false }
+                ],
+                affiliateUrl: 'https://shopee.vn'
+            }
+        ];
+
+        // Hàm hiển thị sản phẩm lên giao diện
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = items.map(item => `
+                <div class="product-card">
+                    <span class="trend-badge">${item.trendTag}</span>
+                    <img src="${item.image}" alt="${item.title}" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">${item.title}</h3>
+                        <div class="trend-reason">💡 <b>Tại sao HOT:</b> ${item.reason}</div>
+                        
+                        <div class="price-box">
+                            ${item.prices.map(p => `
+                                <div class="price-row">
+                                    <span class="shop-name">${p.shop}</span>
+                                    <span class="shop-price ${p.isBest ? 'best-price' : ''}">
+                                        ${p.price} ${p.isBest ? '✔ (Tối ưu)' : ''}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <a href="${item.affiliateUrl}" target="_blank" class="btn-cta">
+                            Đến Nơi Bán Giá Tốt Nhất →
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Hàm lọc danh mục sản phẩm
+        function filterCategory(cat) {
+            // Cập nhật trạng thái active cho nút tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (cat === 'all') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === cat);
+                renderProducts(filtered);
+            }
+        }
+
+        // Khởi chạy ban đầu
+        renderProducts(products);
+    </script>
+</body>
+</html>
